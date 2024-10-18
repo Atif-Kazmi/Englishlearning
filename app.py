@@ -3,8 +3,7 @@ import sqlite3
 import openai
 
 # Set OpenAI API key
-openai.api_key="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"
-
+openai.api_key="MyKey"
 
 # Create SQLite Database and Table
 def create_db():
