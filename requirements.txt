@@ -1,5 +1,5 @@
 streamlit
 transformers
-torch>=2.0.0
-Pillow==9.0.0
-pip==24.2
+torch
+Pillow
+pip>=24.2
