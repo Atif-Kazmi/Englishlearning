@@ -1,24 +1,21 @@
 import streamlit as st
-from transformers import GPT2LMHeadModel, GPT2Tokenizer
+from transformers import pipeline
 
-# Load the model and tokenizer
+# Load the chatbot model
 @st.cache_resource
 def load_model():
-    tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-    model = GPT2LMHeadModel.from_pretrained("gpt2")
-    return tokenizer, model
+    chatbot = pipeline("text-generation", model="gpt2")
+    return chatbot
 
-# Main Streamlit app code
+# Main app interface
 st.title("English Learning Chatbot")
-st.write("Ask me anything in English!")
+st.write("Ask me anything, and I will respond in English!")
 
 # Get user input
 user_input = st.text_input("You: ", "")
 
-# If user input is provided, generate a response
+# Generate a response if input is provided
 if user_input:
-    tokenizer, model = load_model()
-    inputs = tokenizer.encode(user_input, return_tensors="pt")
-    outputs = model.generate(inputs, max_length=100, do_sample=True)
-    bot_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    st.write(f"Bot: {bot_response}")
+    chatbot = load_model()
+    response = chatbot(user_input, max_length=100, num_return_sequences=1)
+    st.write(f"Bot: {response[0]['generated_text']}")
