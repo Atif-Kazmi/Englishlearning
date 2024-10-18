@@ -1,4 +1,5 @@
-python==3.8
-streamlit==1.39.0
-transformers==4.30.0
-torch==2.2.0
+streamlit
+transformers
+torch>=2.0.0
+Pillow==9.0.0
+pip==24.2
