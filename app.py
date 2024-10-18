@@ -2,8 +2,8 @@ import streamlit as st
 import sqlite3
 import openai
 
-# Set OpenAI API key
-openai.api_key="MyKey"
+# Fetch OpenAI API key from environment variable
+openai.api_key = st.secrets["MyKey"]
 
 # Create SQLite Database and Table
 def create_db():
@@ -40,16 +40,13 @@ def get_bot_response(user_input):
     if memory:
         return memory  # Return stored response if it exists
     else:
-        # Generate a new response using OpenAI's Chat API (using chat-based method)
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Or use "gpt-4" if available
-            messages=[
-                {"role": "system", "content": "You are a helpful chatbot."},
-                {"role": "user", "content": user_input},
-            ],
+        # Generate a new response using OpenAI's latest API
+        response = openai.completions.create(
+            model="gpt-3.5-turbo",  # Use "gpt-4" or other models if needed
+            prompt=user_input,
             max_tokens=150
         )
-        bot_response = response['choices'][0]['message']['content'].strip()
+        bot_response = response['choices'][0]['text'].strip()
         store_in_memory(user_input, bot_response)  # Store the response for future use
         return bot_response
 
