@@ -3,9 +3,10 @@ import sqlite3
 import openai
 
 # Set OpenAI API key
-openai.api_key = "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"
+openai.api_key = "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
+"
 
-# SQLite database connection
+# Create SQLite Database and Table
 def create_db():
     """Creates a SQLite database and table for storing user inputs and bot responses."""
     conn = sqlite3.connect("chatbot_memory.db")
@@ -40,20 +41,23 @@ def get_bot_response(user_input):
     if memory:
         return memory  # Return stored response if it exists
     else:
-        # Generate a new response using OpenAI GPT
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=f"You are a helpful chatbot. Respond to the following question: {user_input}",
+        # Generate a new response using OpenAI's Chat API (using chat-based method)
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # Or use "gpt-4" if available
+            messages=[
+                {"role": "system", "content": "You are a helpful chatbot."},
+                {"role": "user", "content": user_input},
+            ],
             max_tokens=150
         )
-        bot_response = response.choices[0].text.strip()
+        bot_response = response['choices'][0]['message']['content'].strip()
         store_in_memory(user_input, bot_response)  # Store the response for future use
         return bot_response
 
 # Create the database when the script runs
 create_db()
 
-# Streamlit interface
+# Streamlit UI for the chatbot
 st.title("Chatbot with Memory (SQLite)")
 st.write("Ask me anything, and I will remember it!")
 
