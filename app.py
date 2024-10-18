@@ -1,33 +1,24 @@
 import streamlit as st
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
-# Load the GPT-Neo or GPT-2 model and tokenizer from Hugging Face
+# Load the model and tokenizer
 @st.cache_resource
 def load_model():
-    tokenizer = GPT2Tokenizer.from_pretrained("EleutherAI/gpt-neo-2.7B")
-    model = GPT2LMHeadModel.from_pretrained("EleutherAI/gpt-neo-2.7B")
+    tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+    model = GPT2LMHeadModel.from_pretrained("gpt2")
     return tokenizer, model
 
-tokenizer, model = load_model()
+# Main Streamlit app code
+st.title("English Learning Chatbot")
+st.write("Ask me anything in English!")
 
-def generate_response(prompt):
-    inputs = tokenizer.encode(prompt, return_tensors="pt")
-    outputs = model.generate(inputs, max_length=100, num_return_sequences=1)
-    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return response
+# Get user input
+user_input = st.text_input("You: ", "")
 
-# Streamlit app interface
-st.title("GPT Chatbot")
-
-st.write(
-    """
-    This is a simple chatbot using GPT-Neo model from Hugging Face Transformers.
-    Enter a message below and the chatbot will respond.
-    """
-)
-
-# Input field for user query
-user_input = st.text_input("You: ")
-
+# If user input is provided, generate a response
 if user_input:
-    st.write("Bot: ", generate_response(user_input))
+    tokenizer, model = load_model()
+    inputs = tokenizer.encode(user_input, return_tensors="pt")
+    outputs = model.generate(inputs, max_length=100, do_sample=True)
+    bot_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    st.write(f"Bot: {bot_response}")
