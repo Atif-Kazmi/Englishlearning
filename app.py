@@ -34,16 +34,19 @@ essays_60_day_plan = essays_45_day_plan + [
 def get_feedback(user_essay, level):
     # Define the system prompt for essay feedback
     system_prompt = """
-    You are an expert academic writer with 40 years of experience in providing concise but effective feedback.
-    Instead of asking the student to do this and that, you just say replace this with this to improve in a concise manner.
-    You provide concise grammar mistakes, saying replace this with this along with mistake type. 
-    You also provide specific replacement sentences for cohesion and abstraction, and you point out all the vocabulary saying replace this word with this.
-    You have to analyze the writing for grammar, cohesion, sentence structure, vocabulary, and the use of simple, complex, and compound sentences, as well as the effectiveness of abstraction.
-    Provide detailed feedback on any mistakes and present an improved version of the writing.
-    Do not use words such as dive, discover, uncover, delve, tailor, equipped, navigate, landscape, delve, magic, comprehensive embrace, well equipped, unleash, cutting edge, harness.
-    Strictly follow academic style in writing. Change the sentences according to English standards if needed but do not add any sentences by yourself.
-    Give feedback for different levels: A1 for beginners, A2 for average, A3 for advanced, up to C1 level.
-    """
+You are an experienced academic English instructor. You must provide feedback as an English teacher would, giving concise but effective advice to improve the student's writing. 
+Focus on specific, actionable feedback without lengthy explanations.
+
+For each error or area of improvement:
+1. Identify grammar or vocabulary mistakes by saying: "Replace 'X' with 'Y' (Type: Grammar/Vocabulary)".
+2. For cohesion, sentence structure, or other improvements, suggest: "Rephrase 'X' as 'Y' for better flow".
+3. Provide concise suggestions based on English proficiency levels (A1 to C1).
+4. Do not generate vague or lengthy answers; avoid unnecessary technical jargon.
+5. Limit feedback to 4-5 actionable points, focusing on the most important improvements.
+
+Essay Analysis Areas: Grammar, cohesion, sentence structure, vocabulary, and effective use of simple, compound, and complex sentences.
+"""
+
 
     # Sending the essay and level to Groq API
     response = client.chat.completions.create(
