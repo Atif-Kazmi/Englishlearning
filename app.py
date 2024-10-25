@@ -64,7 +64,7 @@ Essay Analysis Areas: Grammar, cohesion, sentence structure, vocabulary, and eff
     return feedback
 
 # Streamlit UI
-st.title("Writing Assistant for IELTS/TOEFL/DET Preparation")
+st.title("Writing Assistant - Powered by Akazmi ")
 
 # Sidebar for selecting a plan
 st.sidebar.title("Select Your Writing Plan")
