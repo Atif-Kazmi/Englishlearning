@@ -1,3 +1,2 @@
 streamlit
-transformers==4.30.0
-Pillow
+groq
